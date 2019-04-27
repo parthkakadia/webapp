@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        <%= pagetitle %>
+    </title>
+    <script src="https://apis.mapmyindia.com/advancedmaps/v1/(Your licence key here)/map_load?v=1.2"></script>
+    <style>
+        html,
+        body,
+        #map {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .info_css {
+            color: #000;
+            text-decoration: none;
+            background-color: #fff;
+            width: 270px;
+            padding: 5px;
+            font-size: 12px;
+        }
+
+        div.header {
+            position: relative;
+            background-color: #191919;
+            color: #fff;
+            line-height: 20px;
+            font-size: 13px;
+            vertical-align: middle;
+            padding: 5px 35px 5px 5px;
+        }
+
+    </style>
+    <script>
+
+        var request = new XMLHttpRequest();
+        var map = null;
+        var url = "http://localhost:3000/data/save";
+        var geturl = "http://localhost:3000/data/get";
+        var blueIcon = new L.Icon({
+            iconUrl: '/images/marker-icon-2x-blue.png',
+            shadowUrl: '/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowAnchor: [4, 62],
+            shadowSize: [41, 41]
+        });
+        var redIcon = new L.Icon({
+            iconUrl: '/images/marker-icon-red.png',
+            shadowUrl: '/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowAnchor: [4, 62],
+            shadowSize: [41, 41]
+        });
+        var greenIcon = new L.Icon({
+            iconUrl: '/images/marker-icon-2x-green.png',
+            shadowUrl: '/images/marker-shadow.png',
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+            shadowAnchor: [4, 62]
+        });
+        request.open('GET', geturl, true);
+        var data = null;
+        var mk1; //Visat
+        var mk2; //RTO
+        var mk3; //Shivrajni
+        var mk4; //Isckon
+        var mk5; //Chandkheda Police Chowki
+        var mk6; //Vaishnov Devi Mandir
+        var mk7; //SG hwy
+        var mk8; //Science City
+        var mk9; //SP Ring Road
+        window.onload = function () {
+
+
+            var center = new L.latLng(23.08669, 72.52809); /*CLG*/
+            map = new MapmyIndia.Map('map', {
+                center: center,
+                zoomControl: true,
+                hybrid: true
+            });
+
+            /*map.addLayer(pt1);
+            map.addLayer(pt2);
+            map.addLayer(pt3);
+            map.addLayer(pt4);
+            map.addLayer(pt5);
+            map.addLayer(pt6);*/
+
+            request.onload = function () {
+                data = JSON.parse(this.response);
+
+                mk1 = L.marker(data[0].location);
+                map.addLayer(mk1);
+                mk1.bindPopup(create_content(data[0].name, mk1.getLatLng()));
+
+                mk2 = L.marker(data[1].location);
+                map.addLayer(mk2);
+                mk2.bindPopup(create_content(data[1].name, mk2.getLatLng()));
+
+                mk3 = L.marker(data[2].location);
+                map.addLayer(mk3);
+                mk3.bindPopup(create_content(data[2].name, mk3.getLatLng()));
+
+                mk4 = L.marker(data[3].location);
+                map.addLayer(mk4);
+                mk4.bindPopup(create_content(data[3].name, mk4.getLatLng()));
+
+                mk5 = L.marker(data[4].location);
+                map.addLayer(mk5);
+                mk5.bindPopup(create_content(data[4].name, mk5.getLatLng()));
+
+                mk6 = L.marker(data[5].location);
+                map.addLayer(mk6);
+                mk6.bindPopup(create_content(data[5].name, mk6.getLatLng()));
+
+                mk7 = L.marker(data[6].location);
+                map.addLayer(mk7);
+                mk7.bindPopup(create_content(data[6].name, mk7.getLatLng()));
+
+                mk8 = L.marker(data[7].location);
+                map.addLayer(mk8);
+                mk8.bindPopup(create_content(data[7].name, mk8.getLatLng()));
+
+                mk9 = L.marker(data[8].location);
+                map.addLayer(mk9);
+                mk9.bindPopup(create_content(data[8].name, mk9.getLatLng()));
+
+
+            };
+            request.send();
+            var r2;
+            var r1;
+            var r3;
+            var flag = false;
+            map.on("click", function (e) {
+                mk5.setIcon(blueIcon);
+                mk4.setIcon(redIcon);
+                var latlngs_r1 = Array();
+                latlngs_r1.push(mk5.getLatLng());
+                latlngs_r1.push(mk6.getLatLng());
+                latlngs_r1.push(mk7.getLatLng());
+                latlngs_r1.push(mk4.getLatLng());
+                if (!flag) {
+                    r1 = L.polyline(latlngs_r1, {color: 'red'}).addTo(map);
+                }
+                var latlngs_r2 = Array();
+                latlngs_r2.push(mk5.getLatLng());
+                latlngs_r2.push(mk1.getLatLng());
+                latlngs_r2.push(mk2.getLatLng());
+                latlngs_r2.push(mk3.getLatLng());
+                latlngs_r2.push(mk4.getLatLng());
+                r2 = L.polyline(latlngs_r2, {color: 'purple'}).addTo(map);
+
+                var latlngs_r3 = Array();
+                latlngs_r3.push(mk5.getLatLng());
+                latlngs_r3.push(mk6.getLatLng());
+                latlngs_r3.push(mk8.getLatLng());
+                latlngs_r3.push(mk9.getLatLng());
+                latlngs_r3.push(mk4.getLatLng());
+                r3 = L.polyline(latlngs_r3, {color: 'blue'}).addTo(map);
+
+
+                //openPopup();
+                //pt = e.latlng;
+                //var mk=L.marker(pt);
+                //map.addLayer(mk);
+                //var title=prompt("Enter Name");
+                //var device=prompt("Enter device Name");
+                //mk.bindPopup(create_content(title,mk.getLatLng())).openPopup();
+                //var data={location:pt,name:title,deviceID:device};
+                //var senddata=JSON.stringify(data);
+                //request.open('POST',url,true);
+                //request.setRequestHeader('Content-type','application/json; charset=utf-8');
+                //request.send(senddata);
+
+            });
+
+            map.on('keypress', function (e) {
+                var arrayOfPoints_r1 = r1.getLatLngs();
+                var arrayOfPoints_r2 = r2.getLatLngs();
+                var arrayOfPoints_r3 = r3.getLatLngs();
+                var waypoints = {
+                    r1: arrayOfPoints_r1,
+                    r2: arrayOfPoints_r2,
+                    r3: arrayOfPoints_r3,
+                }
+                var route_uri = "http://localhost:3000/data/getRoute";
+                var aqi;
+                request.open('POST', route_uri, true);
+                request.setRequestHeader('Content-Type', 'application/json;charset=UTF-8')
+                request.onload = function () {
+                    var aqi = JSON.parse(this.response);
+                    r2.bindPopup(create_content("Route 2", "AQI: " + aqi.r2)).openPopup();
+                    r3.bindPopup(create_content("Route 3", "AQI: " + aqi.r3)).openPopup();
+                    r1.bindPopup(create_content("Route 1", "AQI: " + aqi.r1)).openPopup();
+                    r1.setStyle({color: 'lightgreen'});
+                    flag=true;
+                    alert("The recommended path has:" + aqi.r1);
+                }
+                request.send(JSON.stringify(waypoints));
+
+
+            });
+
+
+        };
+        var create_content = function (title, content) {
+            var h = new Array();
+            h.push("<div>");
+            h.push("<div class=\"header\">");
+            h.push("<span>");
+            h.push(title);
+            h.push("</span> ");
+            h.push("</div>");
+            h.push("<div class=\"info_css\">");
+            h.push(content);
+            h.push("</div>");
+            h.push("</div>");
+            return h.join("");
+        };
+
+
+    </script>
+</head>
+<body>
+<div id="map"></div>
+</body>
+</html>

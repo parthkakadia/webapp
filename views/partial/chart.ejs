@@ -1,0 +1,118 @@
+<script>
+    var fields = ['co', 'temp']
+    var request = new XMLHttpRequest();
+    var data;
+
+    request.open('GET', "<%= uri %>", true);
+    request.onload = function () {
+        data = JSON.parse(this.response);
+
+        chart = c3.generate({
+
+            bindto: '#chart',
+            data: {
+                json: data,
+                keys: {
+                    x: 'timestamp',
+                    xFormat: '%Y-%m-%d %H:%M:%S',
+                    value: fields
+                }
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                    tick: {
+                        format: '%H:%M:%S' // how the date is displayed
+                    }
+                }
+            }
+        });
+        chart.flush();
+        console.log(data[data.length - 1]);
+        gauge = c3.generate({
+            bindto: '#gauge',
+            data: {
+                json: [data[data.length - 1]],
+                keys: {
+                    value: ['aqi']
+                },
+                type: 'gauge',
+                onmouseover: function (d, i) {
+                    console.log("onmouseover", d, i);
+                },
+                onmouseout: function (d, i) {
+                    console.log("onmouseout", d, i);
+                }
+            },
+            gauge: {
+                label: {
+                    format: function (value, ratio) {
+                        return value.toFixed(0);
+                    },
+                    show: false // to turn off the min/max labels.
+                },
+//    min: 0, // 0 is default, //can handle negative min e.g. vacuum / voltage / current flow / rate of change
+                max: 500, // 100 is default
+                //units: '',
+//    width: 39 // for adjusting arc thickness
+            },
+            color: {
+                pattern: ['#60B044', '#F6C600', '#F97600', '#FF0000', '#C54066', '#460a18'], // the three color levels for the percentage values.
+                threshold: {
+                    unit: 'value', // percentage is default
+                    max: 500, // 100 is default
+                    values: [50, 100, 150, 200, 300, 500]
+                }
+            },
+            size: {
+                height: 180
+            }
+        });
+        gauge.flush();
+    }
+    request.send();
+
+    function reload() {
+        request.open("GET", "<%= uri1 %>", true);
+        request.onload = function () {
+            data = JSON.parse(this.response);
+            chart.flow({
+                    json: data,
+                    length: 0,
+                    keys: {
+                        x: 'timestamp',
+                        xFormat: '%Y-%m-%d %H:%M:%S',
+                        value: fields
+                    },
+                    axis: {
+                        x: {
+                            type: 'timeseries',
+                            tick: {
+                                format: '%H:%M:%S' // how the date is displayed
+                            }
+                        }
+                    }
+                }
+            );
+            chart.flush();
+            //alert(data);
+            gauge.load(
+                {
+                    json: data,
+                    keys: {
+                        value: ['aqi']
+                    }
+                }
+            );
+            gauge.flush();
+        }
+        request.send();
+
+    }
+
+    window.setInterval(function () {
+        reload();
+    }, 5000);
+
+
+</script>

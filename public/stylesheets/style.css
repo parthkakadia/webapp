@@ -1,0 +1,10 @@
+body {
+  font-family: 'Varela Round', sans-serif;
+}
+.row.content {height: 750px}
+
+/* Set gray background color and 100% height */
+/* On small screens, set height to 'auto' for the grid */
+@media screen and (max-width: 767px) {
+  .row.content {height: auto;}
+}

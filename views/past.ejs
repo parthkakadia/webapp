@@ -1,0 +1,61 @@
+<% include ./partial/start.ejs %>
+
+<body>
+<% include ./partial/nav.ejs %>
+
+<div class="container-fluid">
+    <div class="row content">
+
+        <div class="col-sm-9">
+            <div class="well" align="center">
+                <h4>Welcome to AIRIS!!</h4>
+                <p>Your Air Doctor..</p>
+            </div>
+
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_co"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_sox"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_o3"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_nox"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_pm25"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_pm10"></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<% include ./partial/past_chart_script.ejs %>
+
+</body>
+
+<% include ./partial/end.ejs %>

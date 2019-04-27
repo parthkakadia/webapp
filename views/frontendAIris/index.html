@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>AIRIS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+    <!--link rel="stylesheet" href="./table.css">-->
+    <!-- Load c3.css -->
+    <link href="./c3/c3.css" rel="stylesheet">
+
+    <!-- Load d3.js and c3.js -->
+    <script src="./c3/d3.v5.min.js" charset="utf-8"></script>
+    <script src="./c3/c3.min.js"></script>
+    <script src="../../public/javascripts/chart.js"></script>
+    <script src="../../public/javascripts/gage.js"></script>
+
+    <style>
+        /* Set height of the grid so .sidenav can be 100% (adjust as needed) */
+        .body {
+            background-color: black;
+        }
+
+        .row.content {
+            height: 750px
+        }
+
+        #head {
+            font-family: Georgia;
+            font-size: 100%;
+            font-color: background-color: white;
+        }
+
+        /* Set gray background color and 100% height */
+        .sidenav {
+            background-color: #f1f1f1;
+            height: 100%;
+            width: 25%;
+        }
+
+        /* On small screens, set height to 'auto' for the grid */
+        @media screen and (max-width: 767px) {
+            .row.content {
+                height: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse visible-xs">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">AIRIS</a>
+        </div>
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Dashboard</a></li>
+                <li><a href="pastdata.html">Past Data</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row content">
+        <div class="col-sm-3 sidenav hidden-xs">
+            <h2>AIRIS</h2>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="index.html">Dashboard</a></li>
+                <li><a href="pastdata.html">Past Data</a></li>
+            </ul>
+            <br>
+        </div>
+        <br>
+
+        <div class="col-sm-9">
+            <div class="well" align="center">
+                <h1>Welcome to AIRIS!!</h1>
+                <h4>Your Air Doctor..</h4>
+            </div>
+            <div class="well" align="center">
+                <div id="gauge" class="200x160px"></div>
+                <div id="category"> Display AQI category here</div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_co"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_sox"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_o3"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_nox"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_pm25"></div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="well">
+                        <div id="chart_pm10"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="well" align="center">
+                <div class="table-title">
+                    <h3>Indian AQI Categories</h3>
+                </div>
+                <table class="table-fill">
+                    <thead>
+                    <tr>
+                        <th class="text-left">AQI</th>
+                        <th class="text-left">Associated Health Impacts</th>
+                    </tr>
+                    </thead>
+                    <tbody class="table-hover">
+                    <tr>
+                        <td class="text-left">Good (0–50)</td>
+                        <td class="text-left">Minimal impact</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Satisfactory (51–100)</td>
+                        <td class="text-left">May cause minor breathing discomfort to sensitive people.</td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Moderately polluted (101–200)</td>
+                        <td class="text-left">May cause breathing discomfort to people with lung disease such as asthma,
+                            and discomfort to people with heart disease, children and older adults.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Poor (201–300)</td>
+                        <td class="text-left">May cause breathing discomfort to people on prolonged exposure, and
+                            discomfort to people with heart disease.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Very poor (301–400)</td>
+                        <td class="text-left">May cause respiratory illness to the people on prolonged exposure. Effect
+                            may be more pronounced in people with lung and heart diseases.
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-left">Severe (401–500)</td>
+                        <td class="text-left">May cause respiratory impact even on healthy people, and serious health
+                            impacts on people with lung/heart disease. The health impacts may be experienced even during
+                            light physical activity.
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+</body>
+</html>
